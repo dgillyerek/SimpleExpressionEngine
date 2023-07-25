@@ -4,8 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace UnitTests
 {
@@ -16,8 +14,8 @@ namespace UnitTests
         public void Functions()
         {
             var ctx = new MyFunctionContext();
-            //Assert.AreEqual(Parser.Parse("avgv(3)").Eval(ctx), 80000);
-            //Assert.AreEqual(Parser.Parse("avgv(3,2)").Eval(ctx), 60000);
+            Assert.AreEqual(Parser.Parse("avgv(3)").Eval(ctx), 80000);
+            Assert.AreEqual(Parser.Parse("avgv(3,2)").Eval(ctx), 70000);
             Assert.AreEqual(Parser.Parse("maxc(5)").Eval(ctx), 118.4);
             Assert.AreEqual(Parser.Parse("maxc(3,2)").Eval(ctx), 113.5);
         }
@@ -26,16 +24,9 @@ namespace UnitTests
         public void FunctionsThatDontRequireArgs()
         {
             var ctx = new MyFunctionContext();
-            Assert.AreEqual(Parser.Parse("c()").Eval(ctx), 118.4);
-            Assert.AreEqual(Parser.Parse("c(5)").Eval(ctx), 113.5);
+            Assert.AreEqual(Parser.Parse("c").Eval(ctx), 118.4);
+            Assert.AreEqual(Parser.Parse("c5").Eval(ctx), 103.2);
         }
-    }
-
-    public class FunctionProperties
-    {
-        public int MinArgs { get; set; }
-        public int MaxArgs { get; set; }
-
     }
 
     public class Args
@@ -43,7 +34,6 @@ namespace UnitTests
         public int OffSet { get; set; }
         public int Length { get; set; }
     }
-
 
     //https://medium.com/@toptensoftware/writing-a-simple-math-expression-engine-in-c-d414de18d4ce
     class MyFunctionContext : IContext
@@ -56,6 +46,40 @@ namespace UnitTests
 
         public double ResolveVariable(string name)
         {
+            StockPrice val;
+            if (name.Length == 1)
+            {
+                val = _data.Last();
+            }
+            else
+            {
+                var pos = _data.Count - int.Parse(name.Substring(1));
+                name = name[0].ToString();
+                val = _data[pos];
+            }
+
+            if (name == "c")
+            {
+                return val.ClosePrice;
+            }
+            else if (name == "o")
+            {
+                return val.OpenPrice;
+            }
+            else if (name == "h")
+            {
+                return val.HighPrice;
+            }
+            else if (name == "l")
+            {
+                return val.LowPrice;
+            }
+            else if (name == "v")
+            {
+                return val.Volume;
+            }
+
+
             throw new InvalidDataException($"Unknown variable: '{name}'");
         }
 
@@ -92,6 +116,10 @@ namespace UnitTests
                 else if (ele == 'l')
                 {
                     propertySelector = f => f.LowPrice;
+                }
+                else if (ele == 'v')
+                {
+                    propertySelector = f => f.Volume;
                 }
 
                 if (fun == "avg")

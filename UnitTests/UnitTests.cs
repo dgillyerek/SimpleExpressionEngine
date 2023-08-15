@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IO;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using NUnit.Framework;
 using SimpleExpressionEngine;
 
 namespace UnitTests
 {
-    [TestClass]
     public class UnitTests
     {
-        [TestMethod]
+        [Test]
         public void TokenizerTest()
         {
             var testString = "10 + 20 - 30.123";
@@ -38,7 +37,7 @@ namespace UnitTests
             t.NextToken();
         }
 
-        [TestMethod]
+        [Test]
         public void AddSubtractTest()
         {
             // Add 
@@ -51,7 +50,7 @@ namespace UnitTests
             Assert.AreEqual(Parser.Parse("10 + 20 - 40 + 100").Eval(null), 90);
         }
 
-        [TestMethod]
+        [Test]
         public void UnaryTest()
         {
             // Negative
@@ -70,7 +69,7 @@ namespace UnitTests
             Assert.AreEqual(Parser.Parse("10 + -20 - +30").Eval(null), -40);
         }
 
-        [TestMethod]
+        [Test]
         public void MultiplyDivideTest()
         {
             // Add 
@@ -83,7 +82,7 @@ namespace UnitTests
             Assert.AreEqual(Parser.Parse("10 * 20 / 50").Eval(null), 4);
         }
 
-        [TestMethod]
+        [Test]
         public void OrderOfOperation()
         {
             // No parens
@@ -125,7 +124,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Variables()
         {
             var ctx = new MyContext(10);
@@ -160,7 +159,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Functions()
         {
             var ctx = new MyFunctionContext();
@@ -189,7 +188,7 @@ namespace UnitTests
             }
         }
 
-        [TestMethod]
+        [Test]
         public void Reflection()
         {
             // Create a library of helper function

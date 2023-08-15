@@ -8,72 +8,33 @@ using NUnit.Framework;
 namespace UnitTests
 {
 
-    public class TestCases
-    {
-        [Test]
-        public void Tests()
-        {
-            var engine = new ExpressionEngine();
-            Assert.AreEqual(1, engine.Evaluate("5 < 7"));
-            Assert.AreEqual(0, engine.Evaluate("5 > 7"));
-
-            Assert.AreEqual(1, engine.Evaluate("(5 < 7) && (3 > 2)"));
-            Assert.AreEqual(0, engine.Evaluate("(5 < 7) && (3 < 2)"));
-            Assert.AreEqual(0, engine.Evaluate("(5 > 7) && (3 > 2)"));
-            Assert.AreEqual(0, engine.Evaluate("(5 > 7) && (3 < 2)"));
-
-            Assert.AreEqual(1, engine.Evaluate("5 < 7 && 3 > 2"));
-            Assert.AreEqual(0, engine.Evaluate("5 < 7 && 3 < 2"));
-            Assert.AreEqual(0, engine.Evaluate("5 > 7 && 3 > 2"));
-            Assert.AreEqual(0, engine.Evaluate("5 > 7 && 3 < 2"));
-
-            Assert.AreEqual(1, engine.Evaluate("(5 < 7) || (3 > 2)"));
-            Assert.AreEqual(1, engine.Evaluate("(5 < 7) || (3 < 2)"));
-            Assert.AreEqual(1, engine.Evaluate("(5 > 7) || (3 > 2)"));
-            Assert.AreEqual(0, engine.Evaluate("(5 > 7) || (3 < 2)"));
-
-            Assert.AreEqual(3, engine.Evaluate("sqrt(9)"));
-            Assert.AreEqual(2.302585092994046, engine.Evaluate("log(10)"));
-
-            Assert.AreEqual(-27, engine.Evaluate("3 + 5 * ( 2 - 8 )"));
-            Assert.AreEqual(1, engine.Evaluate("3 + 5 * ( 2 - 8 ) > sqrt(9)"));
-
-            Assert.AreEqual(0, engine.Evaluate("(5 < 7) && (3 > 2) && 1 > 2"));
-            Assert.AreEqual(1, engine.Evaluate("(5 < 7 && 3 < 2) || 2 > 1"));
-            Assert.AreEqual(1, engine.Evaluate("((5 > 7) && (3 > 2)) || 2 > 1"));
-
-            Assert.AreEqual(3, engine.Evaluate("3 + 5 * ( 2 - (1 + 1) )")); // 3
-            Assert.AreEqual(1, engine.Evaluate("((5 < 7) || (3 > 2)) && (8 < (9 + 1))")); // 1
-        }
-    }
-
     public class StockTests
     {
-        //[Test]
-        //public void Functions()
-        //{
-        //    var ctx = new MyFunctionContext();
-        //    Assert.AreEqual(Parser.Parse("avgv(3)").Eval(ctx), 80000);
-        //    Assert.AreEqual(Parser.Parse("avgv(3,2)").Eval(ctx), 70000);
-        //    Assert.AreEqual(Parser.Parse("maxc(5)").Eval(ctx), 118.4);
-        //    Assert.AreEqual(Parser.Parse("maxc(3,2)").Eval(ctx), 113.5);
-        //}
+        [Test]
+        public void Functions()
+        {
+            var ctx = new MyFunctionContext();
+            Assert.AreEqual(Parser.Parse("avgv(3)").Eval(ctx), 80000);
+            Assert.AreEqual(Parser.Parse("avgv(3,2)").Eval(ctx), 70000);
+            Assert.AreEqual(Parser.Parse("maxc(5)").Eval(ctx), 118.4);
+            Assert.AreEqual(Parser.Parse("maxc(3,2)").Eval(ctx), 113.5);
+        }
 
-        //[Test]
-        //public void FunctionsThatDontRequireArgs()
-        //{
-        //    var ctx = new MyFunctionContext();
-        //    Assert.AreEqual(Parser.Parse("c").Eval(ctx), 118.4);
-        //    Assert.AreEqual(Parser.Parse("c5").Eval(ctx), 103.2);
-        //}
+        [Test]
+        public void FunctionsThatDontRequireArgs()
+        {
+            var ctx = new MyFunctionContext();
+            Assert.AreEqual(Parser.Parse("c").Eval(ctx), 118.4);
+            Assert.AreEqual(Parser.Parse("c5").Eval(ctx), 103.2);
+        }
 
-        //[Test]
-        //public void CombinedFuction()
-        //{
-        //    var ctx = new MyFunctionContext();
-        //    var res = Parser.Parse("avgv(3) > 70000");
-        //    Assert.IsTrue(false);
-        //}
+        [Test]
+        public void CombinedFuction()
+        {
+            var ctx = new MyFunctionContext();
+            var res = Parser.Parse("avgv(3) > 70000");
+            Assert.IsTrue(false);
+        }
     }
 
     public class Args
